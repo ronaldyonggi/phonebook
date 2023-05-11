@@ -12,10 +12,23 @@ function App() {
 
   const handleSubmitForm = (event) => {
     event.preventDefault()
-    const newPersons = persons.concat({
-      name: newName
+    // Flag that indicates whether newName already exists in persons
+    let alreadyExist = false;
+    // Check if the newName is contained persons
+    persons.forEach(person => {
+      if (person.name === newName){
+        alert(`${newName} is already added to phonebook`)
+        alreadyExist = true;
+      }
     })
-    setPersons(newPersons)
+    // Only executes if the name is not contained in persons
+    if (!alreadyExist) {
+      const newPersons = persons.concat({
+        name: newName
+      })
+      setPersons(newPersons)
+      setNewName('')
+    }
   }
 
   return (
