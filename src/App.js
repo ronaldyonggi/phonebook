@@ -2,14 +2,16 @@ import { useEffect, useState } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import DisplayPerson from "./components/DisplayPersons";
-import axios from "axios";
 import personsService from './services/persons'
+import Notification from "./components/Notification";
+
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [notification, setNotification] = useState('')
 
   // Initial fetch data from DB
   useEffect(() => {
@@ -80,6 +82,11 @@ const App = () => {
           setPersons(persons.concat(newlyAddedPerson))
           setNewName('')
           setNewNumber('')
+          setNotification(`Added ${newlyAddedPerson.name}`)
+          // Reset notification to blank
+          setTimeout(() => {
+            setNotification('')
+          }, 5000)
         })
     }
   }
@@ -89,6 +96,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification}/>
       <Filter newFilter={newFilter} handleFilterInputChange={handleFilterInputChange} />
       <h3>Add a new</h3>
       <PersonForm 
