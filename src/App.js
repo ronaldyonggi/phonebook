@@ -61,6 +61,10 @@ const App = () => {
               setPersons(persons.map(p => p.id === person.id ? updatedPerson : p ))
               setNewName('')
               setNewNumber('')
+              setNotification(`${updatedPerson.name}'s number is updated to ${updatedPerson.number}`)
+              setTimeout(() => {
+                setNotification('')
+              }, 5000)
             })
         }
         alreadyExist = true;
