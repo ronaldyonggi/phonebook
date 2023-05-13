@@ -12,6 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
   const [notification, setNotification] = useState('')
+  const [isError, setIsError] = useState(false)
 
   // Initial fetch data from DB
   useEffect(() => {
@@ -42,6 +43,19 @@ const App = () => {
         // Rerender name list
         .then(() => {
           setPersons(persons.filter(person => person.id !== deletedPerson.id))
+          setNotification(`${deletedPerson.name} is successfully deleted`)
+          setTimeout(() => {
+            setNotification('')
+          }, 5000)
+        })
+        .catch(error => {
+          setIsError(true)
+          setNotification(`Information of ${deletedPerson.name} has already been removed from server`)
+          setPersons(persons.filter(person => person.id !== deletedPerson.id))
+          setTimeout(() => {
+            setIsError(false)
+            setNotification('')
+          }, 5000)
         })
     }
   }
@@ -100,7 +114,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notification}/>
+      <Notification message={notification} isError={isError}/>
       <Filter newFilter={newFilter} handleFilterInputChange={handleFilterInputChange} />
       <h3>Add a new</h3>
       <PersonForm 
